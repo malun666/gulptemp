@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: azure;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">123344</div>
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $('.box').queue(function () {
+          $(this).css('color', 'red').dequeue();
+        }).fadeOut(1000).fadeIn(1000).animate({
+          height: '300px',
+          width: '300px'
+        }, 1000)
+        .slideUp(1000)
+        .slideDown(1000)
+        .queue(function () {
+          $(this).css({
+            backgroundColor: 'blue',
+            color: '#fff'
+          }).dequeue();
+        })
+        .slideUp(1000);
+    });
+  </script>
+</body>
+
+</html>
