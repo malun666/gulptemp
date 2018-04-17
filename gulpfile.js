@@ -32,6 +32,12 @@ const gulp = require('gulp'),
   eslint = require('gulp-eslint'),
   // babel 转换es6
   babel = require('gulp-babel'),
+  // 本地的测试服务器
+  connect = require('gulp-connect'),
+  // 本地测试服务器中间件
+  proxy = require('http-proxy-middleware'),
+  // 服务器的代理插件
+  modRewrite = require('connect-modrewrite'),
   // html 压缩
   htmlmin = require('gulp-htmlmin');
 // minifyHtml = require('gulp-minify-html');
@@ -172,12 +178,28 @@ gulp.task('style:dev', function(e) {
 });
 
 // 开发监控sass文件变化编译sass到css文件 可以增加es6的编译，jslint
-gulp.task('dev', function() {
+gulp.task('dev', ['devServer'], function() {
   gulp.watch('./src/style/**', ['style:dev']);
 });
 
+// 清理dist目录下的历史文件
 gulp.task('cleanDist', function() {
   gulp
     .src(['dist/style/**', 'dist/js/**', 'dist/*.js'], { read: false })
     .pipe(clean());
+});
+
+gulp.task('devServer', function() {
+  connect.server({
+    root: ['./src'],
+    port: 8000,
+    livereload: true,
+    middleware: function(connect, opt) {
+      return [
+        modRewrite([
+          '^/api/(.*)$ http://140.143.64.118:8082/mockjsdata/1/api/$1 [P]'
+        ])
+      ];
+    }
+  });
 });

@@ -29,5 +29,3 @@
 
 * .editorconfig 文件控制编辑器的一致性
 * eslint 校验一致性，并配置 vscode 自动修改符合 eslint 校验，可以安装 eslint 插件。
-
-##

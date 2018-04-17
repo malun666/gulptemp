@@ -1,11 +1,11 @@
 /*
  * @Author: malun
  * @Date: 2018-04-18 01:14:20
- * @Last Modified by:   malun
- * @Last Modified time: 2018-04-18 01:14:20
+ * @Last Modified by: malun
+ * @Last Modified time: 2018-04-18 02:22:19
  */
 
-define(['template', 'js/E'], function(template, E) {
+require(['template', 'js/E', 'jquery'], function(template, E, $) {
   console.log(E.getUserName());
   let data = {
     title: '基本例子',
@@ -14,5 +14,12 @@ define(['template', 'js/E'], function(template, E) {
   };
   let html = template('test', data);
   document.getElementById('content').innerHTML = html;
-  return html;
+  console.log($);
+  $.ajax({
+    url: '/api/shoplist',
+    type: 'GET',
+    success: function(data) {
+      console.log(data);
+    }
+  });
 });
