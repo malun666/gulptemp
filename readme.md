@@ -29,3 +29,21 @@
 
 * .editorconfig 文件控制编辑器的一致性
 * eslint 校验一致性，并配置 vscode 自动修改符合 eslint 校验，可以安装 eslint 插件。
+
+## 本地测试和代理配置
+
+* 运行本地测试
+
+```shell
+$ npm run dev
+```
+
+本地启动服务器地址： http://localhost:8000
+
+## 打包
+
+```shell
+$ npm run build
+
+# 会把最终结果输出到dist目录
+```

@@ -38,6 +38,8 @@ const gulp = require('gulp'),
   proxy = require('http-proxy-middleware'),
   // 服务器的代理插件
   modRewrite = require('connect-modrewrite'),
+  // 打开浏览器
+  open = require('gulp-open'),
   // html 压缩
   htmlmin = require('gulp-htmlmin');
 // minifyHtml = require('gulp-minify-html');
@@ -157,12 +159,18 @@ var copyPathArr = ['./src/lib/**/*', './src/asset/**/*', './src/*.ico'];
 gulp.task('copy', function(e) {
   return gulp.src(copyPathArr, { base: './src' }).pipe(gulp.dest('./dist/'));
 });
-
+// 清理dist目录下的历史文件
+gulp.task('cleanDist', function() {
+  gulp
+    .src(['dist/style/**', 'dist/js/**', 'dist/*.js'], { read: false })
+    .pipe(clean());
+});
 gulp.task('dist', [], function() {
   runSequence('cleanDist', 'style', 'js', 'revjs', 'html', 'copy', 'imgmin');
 });
 
-// 开发相关
+// =====================开发相关======================================
+// 开发样式处理
 gulp.task('style:dev', function(e) {
   var sassFilter = filter(['**/*.scss'], { restore: true });
   return gulp
@@ -178,17 +186,11 @@ gulp.task('style:dev', function(e) {
 });
 
 // 开发监控sass文件变化编译sass到css文件 可以增加es6的编译，jslint
-gulp.task('dev', ['devServer'], function() {
+gulp.task('dev', ['open'], function() {
   gulp.watch('./src/style/**', ['style:dev']);
 });
 
-// 清理dist目录下的历史文件
-gulp.task('cleanDist', function() {
-  gulp
-    .src(['dist/style/**', 'dist/js/**', 'dist/*.js'], { read: false })
-    .pipe(clean());
-});
-
+// 配置测试服务器
 gulp.task('devServer', function() {
   connect.server({
     root: ['./src'],
@@ -202,4 +204,13 @@ gulp.task('devServer', function() {
       ];
     }
   });
+});
+
+// 启动浏览器打开地址
+gulp.task('open', ['devServer'], function() {
+  gulp.src(__filename).pipe(
+    open({
+      uri: 'http://localhost:8000/index.html'
+    })
+  );
 });
