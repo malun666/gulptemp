@@ -2,6 +2,10 @@
   "name": "gulpdemo",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "gulp dev",
+    "build": "gulp dist"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",
