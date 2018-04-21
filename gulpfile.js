@@ -120,8 +120,6 @@ gulp.task('imgmin', function(e) {
 
 // js 压缩添加版本
 gulp.task('js', function(e) {
-  // 自动生成的模板文件，不进行babel转换，不然报错
-  // 参考bug：https://github.com/aui/tmodjs/issues/112
   return gulp
     .src(['./src/**/*.js', '!./src/lib/**'])
     .pipe(eslint())
@@ -195,6 +193,9 @@ gulp.task('tpl', function() {
         compress: false
       })
     )
+    // 自动生成的模板文件，进行babel转换，会报错，此转换插件已经停更，所以间接改这个bug
+    // 参考bug：https://github.com/aui/tmodjs/issues/112
+    // 主要是this  →  window
     .pipe(replace('var String = this.String;', 'var String = window.String;'))
     .pipe(gulp.dest('src/js'));
 });
