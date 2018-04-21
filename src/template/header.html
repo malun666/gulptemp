@@ -1,0 +1,10 @@
+<ul>
+  {{if isAdmin}}
+  <h1>{{title}}</h1>
+  <ul>
+    {{each list}}
+    <li>索引 {{$index+4}} ：{{$value}}</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+</ul>
