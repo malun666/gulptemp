@@ -2,15 +2,16 @@
 
 虽然，`webpack`已经大行其道。作为初学者，gulp 依然是最快的入门学习前端工作流的工具。本项目本着为中小型团队打造一个基于：gulp+sass+requirejs+es6+eslint+arttemplate 的基本的项目模板。
 
-## gulp 相关
+## gulp 相关应用
 
 * js(用 requirejs 管理模块)
   * 压缩
   * 转码
   * 版本号
-  * 修改 requirejs 的 paths
+  * 自动修改注入 requirejs 的 paths
   * es6 转码
   * eslint 检测
+  * 添加版本信息
 * style
   * sass
   * 合并

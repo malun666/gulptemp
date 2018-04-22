@@ -2,7 +2,7 @@
  * @Author: malun
  * @Date: 2018-04-18 01:14:20
  * @Last Modified by: malun
- * @Last Modified time: 2018-04-21 15:50:19
+ * @Last Modified time: 2018-04-21 17:01:18
  */
 
 require(['template', 'js/E', 'jquery', 'htmlTpl'], function(
@@ -23,6 +23,7 @@ require(['template', 'js/E', 'jquery', 'htmlTpl'], function(
   contDom.innerHTML = html;
 
   contDom.innerHTML += htmlTpl('header', data);
+  contDom.innerHTML += htmlTpl('user/footer', data);
 
   $.ajax({
     url: '/api/shoplist',
