@@ -2,15 +2,16 @@
  * @Author: malun
  * @Date: 2018-04-18 01:14:20
  * @Last Modified by: malun
- * @Last Modified time: 2018-04-21 17:01:18
+ * @Last Modified time: 2018-04-23 13:48:26
  */
 
-require(['template', 'js/E', 'jquery', 'htmlTpl'], function(
-  template,
-  E,
-  $,
-  htmlTpl
-) {
+require([
+  'template',
+  'js/E',
+  'jquery',
+  'js/tmpl/user',
+  'js/tmpl/header'
+], function(template, E, $, userTpl, headTpl) {
   console.log(E.getUserName());
   let data = {
     title: '基本例子',
@@ -22,8 +23,8 @@ require(['template', 'js/E', 'jquery', 'htmlTpl'], function(
   let contDom = document.getElementById('content');
   contDom.innerHTML = html;
 
-  contDom.innerHTML += htmlTpl('header', data);
-  contDom.innerHTML += htmlTpl('user/footer', data);
+  contDom.innerHTML += headTpl('header', data);
+  contDom.innerHTML += userTpl('footer', data);
 
   $.ajax({
     url: '/api/shoplist',

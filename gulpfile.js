@@ -1,4 +1,6 @@
 'use strict';
+const fs = require('fs');
+const path = require('path');
 
 // 引入gulp包， nodejs代码
 const gulp = require('gulp'),
@@ -184,20 +186,46 @@ gulp.task('dist', [], function() {
 });
 
 gulp.task('tpl', function() {
-  gulp
-    .src('src/template/**/*.html')
-    .pipe(
-      tmodjs({
-        templateBase: 'src/template',
-        runtime: 'htmlTpl.js',
-        compress: false
-      })
-    )
-    // 自动生成的模板文件，进行babel转换，会报错，此转换插件已经停更，所以间接改这个bug
-    // 参考bug：https://github.com/aui/tmodjs/issues/112
-    // 主要是this  →  window
-    .pipe(replace('var String = this.String;', 'var String = window.String;'))
-    .pipe(gulp.dest('src/js'));
+  // 拿到所有的路径
+  let basePath = path.join(__dirname, 'src/template');
+  let files = fs.readdirSync(basePath);
+  files.forEach((val, index) => {
+    let dirPath = path.join(basePath, val);
+    let stat = fs.statSync(dirPath);
+    if (!stat.isDirectory()) {
+      return;
+    }
+    var fileter = 'src/template/' + val + '/**/*.html';
+    console.log(fileter);
+    gulp
+      .src('src/template/' + val + '/**/*.html')
+      .pipe(
+        tmodjs({
+          templateBase: 'src/template/' + val,
+          runtime: val + '.js',
+          compress: false
+        })
+      )
+      // 自动生成的模板文件，进行babel转换，会报错，此转换插件已经停更，所以间接改这个bug
+      // 参考bug：https://github.com/aui/tmodjs/issues/112
+      // 主要是this  →  window
+      .pipe(replace('var String = this.String;', 'var String = window.String;'))
+      .pipe(gulp.dest('src/js/tmpl/'));
+  });
+  // gulp
+  //   .src('src/template/**/*.html')
+  //   .pipe(
+  //     tmodjs({
+  //       templateBase: 'src/template',
+  //       runtime: 'htmlTpl.js',
+  //       compress: false
+  //     })
+  //   )
+  //   // 自动生成的模板文件，进行babel转换，会报错，此转换插件已经停更，所以间接改这个bug
+  //   // 参考bug：https://github.com/aui/tmodjs/issues/112
+  //   // 主要是this  →  window
+  //   .pipe(replace('var String = this.String;', 'var String = window.String;'))
+  //   .pipe(gulp.dest('src/js'));
 });
 
 // =============

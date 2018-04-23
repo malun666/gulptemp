@@ -193,25 +193,6 @@ $out+='\n  </ul>\n  ';
 }
 $out+='\n</ul>\n';
 return new String($out);
-});/*v:1*/
-template('user/footer',function($data,$filename
-/*``*/) {
-'use strict';var $utils=this,$helpers=$utils.$helpers,isAdmin=$data.isAdmin,$escape=$utils.$escape,title=$data.title,$each=$utils.$each,list=$data.list,$value=$data.$value,$index=$data.$index,$out='';$out+='<ul>\n  ';
-if(isAdmin){
-$out+='\n  <h1>';
-$out+=$escape(title);
-$out+='</h1>\n  <ul>\n    ';
-$each(list,function($value,$index){
-$out+='\n    <li>索引 ';
-$out+=$escape($index+4);
-$out+=' ：';
-$out+=$escape($value);
-$out+='</li>\n    ';
-});
-$out+='\n  </ul>\n  ';
-}
-$out+='\n</ul>\n';
-return new String($out);
 });
 
 }()
