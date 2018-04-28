@@ -160,7 +160,7 @@ gulp.task('revjs', function() {
     .pipe(gulp.dest('dist/'));
 });
 
-// 打包要复制的路径
+// 打包要复制的路径2
 var copyPathArr = ['./src/lib/**/*', './src/asset/**/*', './src/*.ico'];
 // 拷贝gulp文件
 gulp.task('copy', function(e) {
