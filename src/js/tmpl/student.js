@@ -181,6 +181,21 @@ template('stuList',function($data,$filename
 $out+=$escape(name);
 $out+='</h1>\n';
 return new String($out);
+});/*v:1*/
+template('userList',function($data,$filename
+/*``*/) {
+'use strict';var $utils=this,$helpers=$utils.$helpers,$each=$utils.$each,list=$data.list,p=$data.p,i=$data.i,$escape=$utils.$escape,$out='';$out+='<ul>\n  ';
+$each(list,function(p,i){
+$out+='\n  <li>';
+$out+=$escape(p.id);
+$out+='</li>\n  <li>';
+$out+=$escape(p.msg);
+$out+='</li>\n  <li>';
+$out+=$escape(p.user);
+$out+='</li>\n  ';
+});
+$out+='\n</ul>\n';
+return new String($out);
 });
 
 }()
