@@ -176,7 +176,7 @@
     
     /*v:1*/
 template('header',function($data,$filename
-/*``*/) {
+) {
 'use strict';var $utils=this,$helpers=$utils.$helpers,isAdmin=$data.isAdmin,$escape=$utils.$escape,title=$data.title,$each=$utils.$each,list=$data.list,$value=$data.$value,$index=$data.$index,$out='';$out+='<ul>\n  ';
 if(isAdmin){
 $out+='\n  <h1>';

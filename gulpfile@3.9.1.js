@@ -49,7 +49,7 @@ const gulp = require('gulp'),
   tmodjs = require('gulp-tmod');
 // minifyHtml = require('gulp-minify-html'); 样式处理工作流：编译sass → 添加css3前缀 → 合并 →
 // 压缩css →添加版本号
-function style(e) {
+gulp.task('style', function (e) {
   // 过滤非sass文件
   var sassFilter = filter(['**/*.scss'], {restore: true});
   return gulp.src(['./src/style/**/*.{scss,css}', '!./src/style/main.css']) // 读取sass文件
@@ -75,10 +75,10 @@ function style(e) {
     .pipe(gulp.dest('./dist/style/')) // 输出目标文件到dist目录
     .pipe(rev.manifest()) // 生成一个rev-manifest.json
     .pipe(gulp.dest('./src/style/')); // 将 rev-manifest.json 保存到 src目录
-}
+});
 
 // 替换目标html文件中的css版本文件名，js版本的文件名,html 压缩
-function html(e) {
+gulp.task('html', function (e) {
   return gulp.src(['./src/**/*.json', './src/**/*.html', '!./src/template/**']) // - 读取 rev-manifest.json 文件以及需要进行css名替换的文件
     .pipe(revCollector({replaceReved: true})) // - 执行html文件内css文件名的替换和js文件名替换
     .pipe(htmlmin({
@@ -92,10 +92,10 @@ function html(e) {
     minifyCSS: true // 压缩页面CSS
   }))
     .pipe(gulp.dest('./dist/')); // - 替换后的文件输出的目录
-}
+});
 
 // 图片压缩
-function imgmin(e) {
+gulp.task('imgmin', function (e) {
   return gulp
     .src('./src/asset/**/*.{png,jpg,gif,ico}')
     .pipe(imgagemin({
@@ -107,10 +107,10 @@ function imgmin(e) {
       // 默认：false 多次优化svg直到完全优化
     }))
     .pipe(gulp.dest('./dist/asset'));
-}
+});
 
 // js 压缩添加版本
-function js(e) {
+gulp.task('js', function (e) {
   return gulp
     .src(['./src/**/*.js', '!./src/lib/**'])
     .pipe(eslint())
@@ -128,10 +128,10 @@ function js(e) {
     .pipe(gulp.dest('./dist'))
     .pipe(rev.manifest())
     .pipe(gulp.dest('./src/js/'));
-}
+});
 
 // 给requirejs引用的文件修改版本号的路径
-function revjs() {
+gulp.task('revjs', function () {
   return gulp
     .src('./dist/*.js')
     .pipe(configRevReplace({
@@ -139,25 +139,27 @@ function revjs() {
     }))
     .pipe(uglify())
     .pipe(gulp.dest('dist/'));
-}
+});
 
 // 打包要复制的路径2
 var copyPathArr = ['./src/lib/**/*', './src/asset/**/*', './src/*.ico'];
 // 拷贝gulp文件
-function copy(e) {
+gulp.task('copy', function (e) {
   return gulp
     .src(copyPathArr, {base: './src'})
     .pipe(gulp.dest('./dist/'));
-}
+});
 // 清理dist目录下的历史文件
-function cleanDist() {
-  return gulp.src([
+gulp.task('cleanDist', function () {
+  gulp.src([
     'dist/style/**', 'dist/js/**', 'dist/*.js'
   ], {read: false}).pipe(clean());
-}
+});
+gulp.task('dist', [], function () {
+  runSequence('cleanDist', 'tpl', 'style', 'js', 'revjs', 'html', 'copy', 'imgmin');
+});
 
-
-function tpl(cb) {
+gulp.task('tpl', function () {
   // 拿到所有的路径
   let basePath = path.join(__dirname, 'src/template');
   let files = fs.readdirSync(basePath);
@@ -180,18 +182,17 @@ function tpl(cb) {
       // 参考bug：https://github.com/aui/tmodjs/issues/112 主要是this  →  window
       .pipe(replace('var String = this.String;', 'var String = window.String;'))
       .pipe(gulp.dest('src/js/tmpl/'));
-  })
-  cb();
+  });
   // gulp   .src('src/template/**/*.html')   .pipe(     tmodjs({ templateBase:
   // 'src/template',       runtime: 'htmlTpl.js',       compress: false     })   )
   //   // 自动生成的模板文件，进行babel转换，会报错，此转换插件已经停更，所以间接改这个bug   //
   // 参考bug：https://github.com/aui/tmodjs/issues/112   // 主要是this  →  window
   // .pipe(replace('var String = this.String;', 'var String = window.String;'))
   // .pipe(gulp.dest('src/js'));
-}
+});
 
 // ============= 开发样式处理
-function style_dev(e) {
+gulp.task('style:dev', function (e) {
   var sassFilter = filter(['**/*.scss'], {restore: true});
   return gulp.src(['./src/style/**/*.{scss,css}', '!./src/style/main.css']) // 读取sass文件
     .pipe(sourcemaps.init())
@@ -202,20 +203,16 @@ function style_dev(e) {
     .pipe(concat('main.css'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./src/style/'));
-}
+});
 
 // 开发监控sass文件变化编译sass到css文件 可以增加es6的编译，jslint
-// gulp.task('dev', ['open'], function () {
-//   gulp.watch('src/style/**', ['style:dev']);
-//   gulp.watch('src/template/**', ['tpl']);
-// });
-gulp.task('dev', gulp.series( devServer, openBrowser,  function() {
-  gulp.watch('src/style/**', gulp.series(style_dev));
-  gulp.watch('src/template/**', gulp.series(tpl));
-}))
+gulp.task('dev', ['open'], function () {
+  gulp.watch('src/style/**', ['style:dev']);
+  gulp.watch('src/template/**', ['tpl']);
+});
 
 // 配置测试服务器
-function devServer(cb) {
+gulp.task('devServer', function () {
   connect.server({
     root: ['./src'], // 网站根目录
     port: 38900, // 端口
@@ -223,19 +220,13 @@ function devServer(cb) {
     middleware: function (connect, opt) {
       return [modRewrite([// 设置代理
           '^/api/(.*)$ http://140.143.64.118:8082/mockjsdata/1/api/$1 [P]'])];
-    },
+    }
   });
-  cb();
-}
+});
 
 // 启动浏览器打开地址
-function openBrowser() {
-  return  gulp
-  .src(__filename)
-  .pipe(open({uri: 'http://localhost:38900/index.html'}));
-}
-
-// gulp.task('dist', function () {
-//   runSequence('cleanDist', 'tpl', 'style', 'js', 'revjs', 'html', 'copy', 'imgmin');
-// });
-gulp.task('dist', gulp.series(cleanDist, tpl, style, js, revjs, html, copy, imgmin))
+gulp.task('open', ['devServer'], function () {
+  gulp
+    .src(__filename)
+    .pipe(open({uri: 'http://localhost:38900/index.html'}));
+});

@@ -176,7 +176,7 @@
     
     /*v:1*/
 template('stuList',function($data,$filename
-/*``*/) {
+) {
 'use strict';var $utils=this,$helpers=$utils.$helpers,$escape=$utils.$escape,name=$data.name,$out='';$out+='<h1>';
 $out+=$escape(name);
 $out+='</h1>\n';
@@ -184,7 +184,7 @@ return new String($out);
 });/*v:1*/
 template('t','\n');/*v:1*/
 template('userList',function($data,$filename
-/*``*/) {
+) {
 'use strict';var $utils=this,$helpers=$utils.$helpers,$each=$utils.$each,list=$data.list,p=$data.p,i=$data.i,$escape=$utils.$escape,$out='';$out+='<ul>\n  ';
 $each(list,function(p,i){
 $out+='\n  <li>';

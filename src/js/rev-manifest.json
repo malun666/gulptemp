@@ -1,7 +1,10 @@
 {
   "app.js": "app-1e146ec7f8.js",
+  "controller/student/listController.js": "controller/student/listController-ae7b75026d.js",
   "js/E.js": "js/E-cd917532e4.js",
   "js/index.js": "js/index-fbef465bb6.js",
   "js/tmpl/header.js": "js/tmpl/header-95dc520c8e.js",
-  "js/tmpl/user.js": "js/tmpl/user-25668f48ff.js"
+  "js/tmpl/student.js": "js/tmpl/student-444d476042.js",
+  "js/tmpl/user.js": "js/tmpl/user-25668f48ff.js",
+  "service/index.js": "service/index-fc0706c228.js"
 }

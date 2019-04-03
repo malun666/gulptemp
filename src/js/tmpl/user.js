@@ -176,7 +176,7 @@
     
     /*v:1*/
 template('footer',function($data,$filename
-/*``*/) {
+) {
 'use strict';var $utils=this,$helpers=$utils.$helpers,$escape=$utils.$escape,isAdmin=$data.isAdmin,title=$data.title,$each=$utils.$each,list=$data.list,$value=$data.$value,$index=$data.$index,$out='';$out+='<h1>';
 $out+=$escape(isAdmin);
 $out+='</h1>\n<ul>\n  ';
