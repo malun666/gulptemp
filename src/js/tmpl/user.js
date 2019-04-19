@@ -195,6 +195,7 @@ $out+='\n  </ul>\n  ';
 }
 $out+='\n</ul>\n';
 return new String($out);
-});
+});/*v:1*/
+template('scriptdemo','<script src="https://cdn.bootcss.com/jquery/3.3.1/core.js"></script>\n<link href="https://cdn.bootcss.com/bulma/0.7.4/css/bulma.min.css" rel="stylesheet">\n');
 
 }()

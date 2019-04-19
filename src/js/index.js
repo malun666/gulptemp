@@ -2,7 +2,7 @@
  * @Author: malun
  * @Date: 2018-04-18 01:14:20
  * @Last Modified by: malun
- * @Last Modified time: 2018-04-23 13:48:26
+ * @Last Modified time: 2019-04-04 15:11:41
  */
 
 require([
@@ -25,6 +25,7 @@ require([
 
   contDom.innerHTML += headTpl('header', data);
   contDom.innerHTML += userTpl('footer', data);
+  $(document.body).append(userTpl('scriptdemo'));
 
   $.ajax({
     url: '/api/shoplist',
