@@ -49,7 +49,7 @@ const gulp = require('gulp'),
   tmodjs = require('gulp-tmod');
 // minifyHtml = require('gulp-minify-html'); 样式处理工作流：编译sass → 添加css3前缀 → 合并 →
 // 压缩css →添加版本号
-function style(e) {
+function style(cb) {
   // 过滤非sass文件
   var sassFilter = filter(['**/*.scss'], {restore: true});
   return gulp.src(['./src/style/**/*.{scss,css}', '!./src/style/main.css']) // 读取sass文件
@@ -78,7 +78,7 @@ function style(e) {
 }
 
 // 替换目标html文件中的css版本文件名，js版本的文件名,html 压缩
-function html(e) {
+function html(cb) {
   return gulp.src(['./src/**/*.json', './src/**/*.html', '!./src/template/**']) // - 读取 rev-manifest.json 文件以及需要进行css名替换的文件
     .pipe(revCollector({replaceReved: true})) // - 执行html文件内css文件名的替换和js文件名替换
     .pipe(htmlmin({
@@ -95,7 +95,7 @@ function html(e) {
 }
 
 // 图片压缩
-function imgmin(e) {
+function imgmin(cb) {
   return gulp
     .src('./src/asset/**/*.{png,jpg,gif,ico}')
     .pipe(imgagemin({
@@ -110,7 +110,7 @@ function imgmin(e) {
 }
 
 // js 压缩添加版本
-function js(e) {
+function js(cb) {
   return gulp
     .src(['./src/**/*.js', '!./src/lib/**'])
     .pipe(eslint())
@@ -133,7 +133,7 @@ function js(e) {
 // 给requirejs引用的文件修改版本号的路径
 function revjs() {
   return gulp
-    .src('./dist/*.js')
+    .src('./dist/**/*.js')
     .pipe(configRevReplace({
       manifest: gulp.src('./src/js/rev-manifest.json')
     }))
@@ -144,7 +144,7 @@ function revjs() {
 // 打包要复制的路径2
 var copyPathArr = ['./src/lib/**/*', './src/asset/**/*', './src/*.ico'];
 // 拷贝gulp文件
-function copy(e) {
+function copy(cb) {
   return gulp
     .src(copyPathArr, {base: './src'})
     .pipe(gulp.dest('./dist/'));
@@ -191,7 +191,7 @@ function tpl(cb) {
 }
 
 // ============= 开发样式处理
-function style_dev(e) {
+function style_dev(cb) {
   var sassFilter = filter(['**/*.scss'], {restore: true});
   return gulp.src(['./src/style/**/*.{scss,css}', '!./src/style/main.css']) // 读取sass文件
     .pipe(sourcemaps.init())
